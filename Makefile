@@ -8,4 +8,4 @@ SOURCE_FILES=                      \
 GCC_FLAGS="-Wno-extra-tokens"
 
 tankbeta:
-	gcc -o tankbeta ${GCC_FLAGS} ${SOURCE_FILES}
+	gcc -I./shims -I./third_party_source -o tankbeta ${GCC_FLAGS} ${SOURCE_FILES}
