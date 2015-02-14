@@ -1,3 +1,6 @@
+#ifndef _graphics__h__
+#define _graphics__h__
+
 /* BLACK color, which I presume was defined in the original graphics.h */
 #define BLACK 0
 
@@ -20,3 +23,8 @@
 /* Now redefine true/false with non-reserved names */
 #define true  local_true
 #define false local_false
+
+
+void initgraph(int *gdriver, int *gmode, const char *something);
+
+#endif
