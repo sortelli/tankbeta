@@ -1,9 +1,10 @@
 #ifndef _graphics__h__
 #define _graphics__h__
 
-/* BLACK color, which I presume was defined in the original graphics.h */
-#define BLACK 0
-#define WHITE 0xFFFFFFFF
+/* Macros defined in original graphics.h */
+#define BLACK    0
+#define WHITE    0xFFFFFFFF
+#define COPY_PUT 0
 
 /*
   All my original cpp files create constant ints named true and
@@ -37,5 +38,6 @@ void setcolor(int color);
 void getimage(int x, int y, int width, int height, void *pic);
 void putimage(int x, int y, void *pic, int mode);
 size_t imagesize(int x, int y, int width, int height);
+
 
 #endif
