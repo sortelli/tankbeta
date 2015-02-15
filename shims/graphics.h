@@ -55,4 +55,6 @@ int GetKeyState(int key);
 void SetNormalKeysMode(void);
 void SetButtonKeysMode(void);
 
+void itoa(int num, char *str, int base);
+
 #endif

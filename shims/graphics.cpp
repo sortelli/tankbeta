@@ -85,3 +85,15 @@ void SetNormalKeysMode(void) {
 void SetButtonKeysMode(void) {
   // no implementation necessary
 }
+
+void itoa(int num, char *str, int base) {
+  // Only writing impl for base 10 conversion
+  if (base != 10) {
+    fprintf(stderr, "iota() only supports base 10 conversion\n");
+    exit(1);
+  }
+
+  // Stupid unsafe itoa has no buffer size parameter, so we have
+  // to use sprintf instead of snprintf
+  sprintf(str, "%d", num);
+}
