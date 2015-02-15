@@ -28,4 +28,7 @@
 
 void initgraph(int *gdriver, int *gmode, const char *something);
 
+int getcolor(void);
+void setcolor(int color);
+
 #endif

@@ -41,3 +41,12 @@ void initgraph(int *gdriver, int *gmode, const char *something) {
     exit(1);
   }
 }
+
+int getcolor(void) {
+  // TODO: Implement
+  return 0;
+}
+
+void setcolor(int color) {
+  // TODO: Implement
+}
