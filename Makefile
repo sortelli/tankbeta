@@ -9,10 +9,13 @@ SOURCE_FILES=                      \
 GCC_FLAGS=-std=c++98 -Wno-dangling-else -Wno-extra-tokens -ferror-limit=100
 
 tankbeta:
-	gcc `sdl-config --cflags`     \
-            -I./shims                 \
-            -I./third_party_source    \
-            -o tankbeta               \
-            ${GCC_FLAGS}              \
-            ${SOURCE_FILES}           \
-            `sdl-config --static-libs`
+	g++ `sdl-config --cflags`     \
+	    -I./shims                 \
+	    -I./third_party_source    \
+	    -o tankbeta               \
+	    ${GCC_FLAGS}              \
+	    ${SOURCE_FILES}           \
+	    `sdl-config --static-libs`
+
+clean:
+	rm -f tankbeta
