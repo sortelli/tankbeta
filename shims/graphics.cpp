@@ -72,3 +72,11 @@ size_t imagesize(int x, int y, int width, int height) {
   // TODO: Implement
   return 0;
 }
+
+void SetNormalKeysMode(void) {
+  // no implementation necessary
+}
+
+void SetButtonKeysMode(void) {
+  // no implementation necessary
+}

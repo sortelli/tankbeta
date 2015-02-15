@@ -39,5 +39,7 @@ void getimage(int x, int y, int width, int height, void *pic);
 void putimage(int x, int y, void *pic, int mode);
 size_t imagesize(int x, int y, int width, int height);
 
+void SetNormalKeysMode(void);
+void SetButtonKeysMode(void);
 
 #endif
