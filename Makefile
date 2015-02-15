@@ -6,7 +6,7 @@ SOURCE_FILES=                      \
   original_source/tscreen.cpp      \
   third_party_source/apstring.cpp
 
-GCC_FLAGS=-std=c++98 -Wno-dangling-else -Wno-extra-tokens -ferror-limit=100
+GCC_FLAGS=-std=c++98
 
 tankbeta:
 	g++ `sdl-config --cflags`     \
