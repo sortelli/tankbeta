@@ -3,6 +3,7 @@
 
 /* BLACK color, which I presume was defined in the original graphics.h */
 #define BLACK 0
+#define WHITE 0xFFFFFFFF
 
 /*
   All my original cpp files create constant ints named true and
