@@ -34,4 +34,8 @@ void putpixel(int x, int y, int color);
 int getcolor(void);
 void setcolor(int color);
 
+void getimage(int x, int y, int width, int height, void *pic);
+void putimage(int x, int y, void *pic, int mode);
+size_t imagesize(int x, int y, int width, int height);
+
 #endif

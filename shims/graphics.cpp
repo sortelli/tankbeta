@@ -59,3 +59,16 @@ int getcolor(void) {
 void setcolor(int color) {
   // TODO: Implement
 }
+
+void getimage(int x, int y, int width, int height, void *pic) {
+  // TODO: Implement
+}
+
+void putimage(int x, int y, void *pic, int mode) {
+  // TODO: Implement
+}
+
+size_t imagesize(int x, int y, int width, int height) {
+  // TODO: Implement
+  return 0;
+}
