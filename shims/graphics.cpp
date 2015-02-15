@@ -93,6 +93,10 @@ void floodfill(int x, int y, int color) {
   // TODO: Implement
 }
 
+void outtextxy(int x, int y, const char *text) {
+  // TODO: Implement
+}
+
 int GetKeyState(int key) {
   // TODO: Implement
   return 0;
