@@ -39,6 +39,19 @@ void getimage(int x, int y, int width, int height, void *pic);
 void putimage(int x, int y, void *pic, int mode);
 size_t imagesize(int x, int y, int width, int height);
 
+#define KEY_C     0  /* TODO: Implement */
+#define KEY_D     0  /* TODO: Implement */
+#define KEY_DOWN  0  /* TODO: Implement */
+#define KEY_E     0  /* TODO: Implement */
+#define KEY_ENTER 0  /* TODO: Implement */
+#define KEY_ESC   0  /* TODO: Implement */
+#define KEY_F     0  /* TODO: Implement */
+#define KEY_LEFT  0  /* TODO: Implement */
+#define KEY_RIGHT 0  /* TODO: Implement */
+#define KEY_S     0  /* TODO: Implement */
+#define KEY_UP    0  /* TODO: Implement */
+
+int GetKeyState(int key);
 void SetNormalKeysMode(void);
 void SetButtonKeysMode(void);
 

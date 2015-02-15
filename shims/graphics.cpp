@@ -73,6 +73,11 @@ size_t imagesize(int x, int y, int width, int height) {
   return 0;
 }
 
+int GetKeyState(int key) {
+  // TODO: Implement
+  return 0;
+}
+
 void SetNormalKeysMode(void) {
   // no implementation necessary
 }
