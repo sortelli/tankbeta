@@ -90,6 +90,14 @@ void SetButtonKeysMode(void) {
   // no implementation necessary
 }
 
+void delay(int milliseconds) {
+  // TODO: Implement
+}
+
+void cleardevice(void) {
+  // TODO: Implement
+}
+
 void itoa(int num, char *str, int base) {
   // Only writing impl for base 10 conversion
   if (base != 10) {

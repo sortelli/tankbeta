@@ -56,6 +56,9 @@ int GetKeyState(int key);
 void SetNormalKeysMode(void);
 void SetButtonKeysMode(void);
 
+void delay(int milliseconds);
+void cleardevice(void);
+
 void itoa(int num, char *str, int base);
 
 #endif
