@@ -36,9 +36,9 @@ void putpixel(int x, int y, int color);
 int getcolor(void);
 void setcolor(int color);
 
-void getimage(int x, int y, int width, int height, void *pic);
-void putimage(int x, int y, void *pic, int mode);
-size_t imagesize(int x, int y, int width, int height);
+void getimage(int left, int top, int right, int bottom, void *pic);
+void putimage(int left, int top, void *pic, int mode);
+size_t imagesize(int left, int top, int right, int bottom);
 
 #define KEY_C     0  /* TODO: Implement */
 #define KEY_D     0  /* TODO: Implement */
