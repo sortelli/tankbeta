@@ -77,6 +77,14 @@ size_t imagesize(int left, int top, int right, int bottom) {
   return 0;
 }
 
+void line(int a_x, int a_y, int b_x, int b_y) {
+  // TODO: Implement
+}
+
+void rectangle(int left, int top, int right, int bottom) {
+  // TODO: Implement
+}
+
 int GetKeyState(int key) {
   // TODO: Implement
   return 0;

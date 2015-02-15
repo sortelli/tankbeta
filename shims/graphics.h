@@ -40,6 +40,9 @@ void getimage(int left, int top, int right, int bottom, void *pic);
 void putimage(int left, int top, void *pic, int mode);
 size_t imagesize(int left, int top, int right, int bottom);
 
+void line(int a_x, int a_y, int b_x, int b_y);
+void rectangle(int left, int top, int right, int bottom);
+
 #define KEY_C     0  /* TODO: Implement */
 #define KEY_D     0  /* TODO: Implement */
 #define KEY_DOWN  0  /* TODO: Implement */
