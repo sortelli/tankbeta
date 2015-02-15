@@ -85,6 +85,14 @@ void rectangle(int left, int top, int right, int bottom) {
   // TODO: Implement
 }
 
+void setfillstyle(int mode, int color) {
+  // TODO: Implement
+}
+
+void floodfill(int x, int y, int color) {
+  // TODO: Implement
+}
+
 int GetKeyState(int key) {
   // TODO: Implement
   return 0;

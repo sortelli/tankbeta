@@ -43,6 +43,9 @@ size_t imagesize(int left, int top, int right, int bottom);
 void line(int a_x, int a_y, int b_x, int b_y);
 void rectangle(int left, int top, int right, int bottom);
 
+void setfillstyle(int mode, int color);
+void floodfill(int x, int y, int color);
+
 #define KEY_C     0  /* TODO: Implement */
 #define KEY_D     0  /* TODO: Implement */
 #define KEY_DOWN  0  /* TODO: Implement */
