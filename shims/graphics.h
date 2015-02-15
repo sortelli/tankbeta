@@ -28,6 +28,7 @@
 
 
 void initgraph(int *gdriver, int *gmode, const char *something);
+void closegraph(void);
 
 int getpixel(int x, int y);
 void putpixel(int x, int y, int color);

@@ -42,6 +42,10 @@ void initgraph(int *gdriver, int *gmode, const char *something) {
   }
 }
 
+void closegraph(void) {
+  // TODO: Implement
+}
+
 int getpixel(int x, int y) {
   // TODO: Implement
   return 0;
