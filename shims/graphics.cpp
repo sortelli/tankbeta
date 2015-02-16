@@ -41,7 +41,10 @@ void initgraph(int *gdriver, int *gmode, const char *something) {
 }
 
 void closegraph(void) {
-  // TODO: Implement
+  if (surface) {
+    SDL_Quit();
+    surface = NULL;
+  }
 }
 
 int getpixel(int x, int y) {
@@ -137,10 +140,7 @@ static void _error(long  line, const char *fmt, ...) {
   fprintf(stderr, "\n");
   va_end(args);
 
-  if (surface) {
-    SDL_Quit();
-    surface = NULL;
-  }
+  closegraph();
 
   exit(1);
 }
