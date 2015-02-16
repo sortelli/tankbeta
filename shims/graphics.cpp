@@ -5,6 +5,12 @@
 #include <emscripten.h>
 #endif
 
+#define error(fmt, ...) _error(__LINE__, fmt, __VA_ARGS__)
+#define sdl_error(name, ...) _sdl_error(__LINE__, name)
+
+static void _error(long  line, const char *fmt, ...);
+static void _sdl_error(long  line, const char *name);
+
 static int const SURFACE_WIDTH  = 640;
 static int const SURFACE_HEIGHT = 480;
 static int const SURFACE_BPP    = 32;
@@ -12,22 +18,16 @@ static int const SURFACE_BPP    = 32;
 static SDL_Surface *surface = NULL;
 
 void initgraph(int *gdriver, int *gmode, const char *something) {
-  fprintf(stderr, "DEBUG: Called initgraph()\n");
-
   if (surface) {
-    fprintf(stderr, "initgraph() can only be called once\n");
-    exit(2);
+    error("initgraph() can only be called once", NULL);
   }
 
   if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-    fprintf(stderr, "SDL_Init failed: %s\n", SDL_GetError());
-    exit(1);
+    sdl_error("SDL_Init");
   }
 
   if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL)) {
-    fprintf(stderr, "SDL_EnableKeyRepeat failed: %s\n", SDL_GetError());
-    SDL_Quit();
-    exit(1);
+    sdl_error("SDL_EnableKeyRepeat");
   }
 
   if ((surface = SDL_SetVideoMode(
@@ -36,9 +36,7 @@ void initgraph(int *gdriver, int *gmode, const char *something) {
     SURFACE_BPP,
     SDL_HWSURFACE | SDL_DOUBLEBUF
   )) == NULL) {
-    fprintf(stderr, "SDL_SetVideoMode failed: %s\n", SDL_GetError());
-    SDL_Quit();
-    exit(1);
+    sdl_error("SDL_SetVideoMode");
   }
 }
 
@@ -128,4 +126,25 @@ void itoa(int num, char *str, int base) {
   // Stupid unsafe itoa has no buffer size parameter, so we have
   // to use sprintf instead of snprintf
   sprintf(str, "%d", num);
+}
+
+static void _error(long  line, const char *fmt, ...) {
+  va_list args;
+
+  va_start(args, fmt);
+  fprintf(stderr, "graphics.cpp error on line %ld: ", line);
+  vfprintf(stderr, fmt, args);
+  fprintf(stderr, "\n");
+  va_end(args);
+
+  if (surface) {
+    SDL_Quit();
+    surface = NULL;
+  }
+
+  exit(1);
+}
+
+static void _sdl_error(long  line, const char *name) {
+  _error(line, "SDL function %s failed. Reason: %s", name, SDL_GetError());
 }
