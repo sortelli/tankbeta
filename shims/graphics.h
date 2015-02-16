@@ -1,6 +1,8 @@
 #ifndef _graphics__h__
 #define _graphics__h__
 
+#define main orig_main
+
 /* Macros defined in original graphics.h */
 #define BLACK         0
 #define BLUE          1

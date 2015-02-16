@@ -1,4 +1,5 @@
 #include "graphics.h"
+#undef main
 #include <SDL.h>
 
 #ifdef __EMSCRIPTEN__
@@ -7,6 +8,12 @@
 
 #define error(fmt, ...) _error(__LINE__, fmt, __VA_ARGS__)
 #define sdl_error(name, ...) _sdl_error(__LINE__, name)
+
+extern int orig_main();
+
+extern "C" int main(int argc, char **argv) {
+  orig_main();
+}
 
 static void _error(long  line, const char *fmt, ...);
 static void _sdl_error(long  line, const char *name);
