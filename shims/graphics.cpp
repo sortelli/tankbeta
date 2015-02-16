@@ -68,8 +68,28 @@ void closegraph(void) {
 }
 
 int getpixel(int x, int y) {
-  // TODO: Implement
-  return 0;
+  uint8_t *pixel;
+  int color, pixel_value;
+
+  check_surface();
+  check_bpp();
+
+  if (SDL_LockSurface(surface) < 0) {
+    sdl_error("SDL_LockSurface");
+  }
+
+  pixel = ((uint8_t *) surface->pixels) + y * surface->pitch + x * SURFACE_BPP;
+
+  SDL_UnlockSurface(surface);
+
+  pixel_value = *(uint32_t *) pixel;
+
+  for (color = BLACK; color <= WHITE; ++color) {
+    if (pixel_value == bgi_colors[color])
+      return color;
+  }
+
+  error("Unknown pixel value: %d", pixel_value);
 }
 
 void putpixel(int x, int y, int color) {
