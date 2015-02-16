@@ -8,7 +8,7 @@ SOURCE_FILES=                      \
 
 GCC_FLAGS=-std=c++98
 
-tankbeta:
+tankbeta: ${SOURCE_FILES}
 	g++ `sdl-config --cflags`     \
 	    -I./shims                 \
 	    -I./third_party_source    \
