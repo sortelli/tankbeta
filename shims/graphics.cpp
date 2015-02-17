@@ -187,8 +187,8 @@ void rectangle(int left, int top, int right, int bottom) {
 
   rect.x = left;
   rect.y = top;
-  rect.w = right  - left;
-  rect.h = bottom - top;
+  rect.w = right  - left + 1;
+  rect.h = bottom - top  + 1;
 
   if (SDL_FillRect(surface, &rect, bgi_colors[brush_color])) {
     sdl_error("SDL_FillRect");
