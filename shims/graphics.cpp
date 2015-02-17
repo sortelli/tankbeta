@@ -234,7 +234,11 @@ void delay(int milliseconds) {
 }
 
 void cleardevice(void) {
-  // TODO: Implement
+  if (SDL_FillRect(surface, NULL, bgi_colors[BLACK])) {
+    sdl_error("SDL_FillRect");
+  }
+
+  render_surface();
 }
 
 void itoa(int num, char *str, int base) {
