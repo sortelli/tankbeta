@@ -1,6 +1,7 @@
 #include "graphics.h"
 #undef main
 #include <SDL.h>
+#include <math.h>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -148,7 +149,24 @@ size_t imagesize(int left, int top, int right, int bottom) {
 }
 
 void line(int a_x, int a_y, int b_x, int b_y) {
-  // TODO: Implement
+  double temp_x  = b_x - a_x;
+  double temp_y  = b_y - a_y;
+  double length  = sqrt(temp_x * temp_x + temp_y * temp_y);
+  double delta_x = temp_x / length;
+  double delta_y = temp_y / length;
+  int steps;
+
+  temp_x = a_x;
+  temp_y = a_y;
+
+  for (steps = 0; steps < length; ++steps) {
+    putpixel_raw(temp_x, temp_y, brush_color);
+
+    temp_x += delta_x;
+    temp_y += delta_y;
+  }
+
+  render_surface();
 }
 
 void rectangle(int left, int top, int right, int bottom) {
