@@ -17,9 +17,10 @@ extern "C" int main(int argc, char **argv) {
 
 static void _error(long  line, const char *fmt, ...);
 static void _sdl_error(long  line, const char *name);
-static void check_surface();
-static void check_bpp();
+static void check_surface(void);
+static void check_bpp(void);
 static void check_color(int color);
+static void render_surface(void);
 
 static int const SURFACE_WIDTH  = 640;
 static int const SURFACE_HEIGHT = 480;
@@ -101,7 +102,7 @@ int getpixel(int x, int y) {
   error("Unknown pixel value: %d", pixel_value);
 }
 
-void putpixel(int x, int y, int color) {
+static void putpixel_raw(int x, int y, int color) {
   uint8_t *pixel;
 
   check_surface();
@@ -117,8 +118,11 @@ void putpixel(int x, int y, int color) {
   *(Uint32 *) pixel = bgi_colors[color];
 
   SDL_UnlockSurface(surface);
+}
 
-  SDL_Flip(surface);
+void putpixel(int x, int y, int color) {
+  putpixel_raw(x, y, color);
+  render_surface();
 }
 
 int getcolor(void) {
@@ -214,13 +218,13 @@ static void _sdl_error(long  line, const char *name) {
   _error(line, "SDL function %s failed. Reason: %s", name, SDL_GetError());
 }
 
-static void check_surface() {
+static void check_surface(void) {
   if (surface == NULL) {
     error("surface is null", NULL);
   }
 }
 
-static void check_bpp() {
+static void check_bpp(void) {
   if (surface->format->BytesPerPixel != SURFACE_BPP) {
     error("Expecting %d bytes per pxiel. Got %d",
           SURFACE_BPP,
@@ -232,4 +236,8 @@ static void check_color(int color) {
   if (color < BLACK || color > WHITE) {
     error("Illegal color value: %d", color);
   }
+}
+
+static void render_surface(void) {
+  SDL_Flip(surface);
 }
