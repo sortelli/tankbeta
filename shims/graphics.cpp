@@ -19,6 +19,7 @@ static void _error(long  line, const char *fmt, ...);
 static void _sdl_error(long  line, const char *name);
 static void check_surface();
 static void check_bpp();
+static void check_color(int color);
 
 static int const SURFACE_WIDTH  = 640;
 static int const SURFACE_HEIGHT = 480;
@@ -26,6 +27,7 @@ static int const SURFACE_BPP    = 4;   //BytesPerPixel
 
 static SDL_Surface *surface = NULL;
 static uint32_t bgi_colors[16];
+static int brush_color = BLACK;
 
 void initgraph(int *gdriver, int *gmode, const char *something) {
   if (surface) {
@@ -104,10 +106,7 @@ void putpixel(int x, int y, int color) {
 
   check_surface();
   check_bpp();
-
-  if (color < BLACK || color > WHITE) {
-    error("Illegal color value in putpixel: %d", color);
-  }
+  check_color(color);
 
   if (SDL_LockSurface(surface) < 0) {
     sdl_error("SDL_LockSurface");
@@ -123,12 +122,12 @@ void putpixel(int x, int y, int color) {
 }
 
 int getcolor(void) {
-  // TODO: Implement
-  return 0;
+  return brush_color;
 }
 
 void setcolor(int color) {
-  // TODO: Implement
+  check_color(color);
+  brush_color = color;
 }
 
 void getimage(int left, int top, int right, int bottom, void *pic) {
@@ -226,5 +225,11 @@ static void check_bpp() {
     error("Expecting %d bytes per pxiel. Got %d",
           SURFACE_BPP,
           surface->format->BytesPerPixel);
+  }
+}
+
+static void check_color(int color) {
+  if (color < BLACK || color > WHITE) {
+    error("Illegal color value: %d", color);
   }
 }
