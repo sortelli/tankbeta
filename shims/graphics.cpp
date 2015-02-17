@@ -171,10 +171,30 @@ void line(int a_x, int a_y, int b_x, int b_y) {
 }
 
 void rectangle(int left, int top, int right, int bottom) {
-  line(left,         top,    left + right, top);
-  line(left + right, top,    left + right, bottom);
-  line(left + right, bottom, left,         bottom);
-  line(left,         bottom, left,         top);
+  /* A more accurate implementation of rectangle would only
+     draw an empty box.  Example:
+
+      line(left,         top,    left + right, top);
+      line(left + right, top,    left + right, bottom);
+      line(left + right, bottom, left,         bottom);
+      line(left,         bottom, left,         top);
+
+    Instead we will draw a filled rectangle, since all calls to
+    rectangle in the original source are followed by floodfill
+  */
+
+  SDL_Rect rect;
+
+  rect.x = left;
+  rect.y = top;
+  rect.w = right  - left;
+  rect.h = bottom - top;
+
+  if (SDL_FillRect(surface, &rect, bgi_colors[brush_color])) {
+    sdl_error("SDL_FillRect");
+  }
+
+  render_surface();
 }
 
 void setfillstyle(int mode, int color) {
@@ -187,7 +207,9 @@ void setfillstyle(int mode, int color) {
 }
 
 void floodfill(int x, int y, int color) {
-  // TODO: Implement
+  // In the original source, the only calls to floodfill are used to
+  // fill in rectangles. Instead of implementing this I'll just use
+  // an implementation of rectangle that fills at the same time.
 }
 
 void outtextxy(int x, int y, const char *text) {
