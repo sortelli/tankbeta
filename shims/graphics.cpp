@@ -170,7 +170,10 @@ void line(int a_x, int a_y, int b_x, int b_y) {
 }
 
 void rectangle(int left, int top, int right, int bottom) {
-  // TODO: Implement
+  line(left,         top,    left + right, top);
+  line(left + right, top,    left + right, bottom);
+  line(left + right, bottom, left,         bottom);
+  line(left,         bottom, left,         top);
 }
 
 void setfillstyle(int mode, int color) {
