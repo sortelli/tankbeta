@@ -30,6 +30,7 @@ static int const SURFACE_BPP    = 4;   //BytesPerPixel
 static SDL_Surface *surface = NULL;
 static uint32_t bgi_colors[16];
 static int brush_color = BLACK;
+static int fill_color  = BLACK;
 
 void initgraph(int *gdriver, int *gmode, const char *something) {
   if (surface) {
@@ -177,7 +178,12 @@ void rectangle(int left, int top, int right, int bottom) {
 }
 
 void setfillstyle(int mode, int color) {
-  // TODO: Implement
+  if (mode != 1) { // SOLID_FILL
+    error("Only supported fill mode is 1 (SOLID_FILL). Illegal value = %d", mode);
+  }
+
+  check_color(color);
+  fill_color = color;
 }
 
 void floodfill(int x, int y, int color) {
