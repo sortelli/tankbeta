@@ -83,6 +83,11 @@ int getpixel(int x, int y) {
   uint8_t *pixel;
   int color, pixel_value;
 
+  if (x < 0 || x >= SURFACE_WIDTH || y < 0 || y >= SURFACE_HEIGHT) {
+    fprintf(stderr, "DEBUG: pixel out of bounds %d, %d\n", x, y);
+    return BLACK;
+  }
+
   check_surface();
   check_bpp();
 
@@ -101,7 +106,7 @@ int getpixel(int x, int y) {
       return color;
   }
 
-  error("Unknown pixel value: %d", pixel_value);
+  error("Unknown pixel value at (%d, %d): %d", x, y, pixel_value);
 }
 
 static void putpixel_raw(int x, int y, int color) {
