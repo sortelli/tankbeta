@@ -9,13 +9,13 @@ SOURCE_FILES=                      \
 GCC_FLAGS=-std=c++98
 
 tankbeta: ${SOURCE_FILES}
-	g++ `sdl-config --cflags`     \
-	    -I./shims                 \
-	    -I./third_party_source    \
-	    -o tankbeta               \
-	    ${GCC_FLAGS}              \
-	    ${SOURCE_FILES}           \
-	    `sdl-config --static-libs`
+	g++ `pkg-config SDL_ttf --cflags` \
+	    -I./shims                     \
+	    -I./third_party_source        \
+	    -o tankbeta                   \
+	    ${GCC_FLAGS}                  \
+	    ${SOURCE_FILES}               \
+	    `pkg-config SDL_ttf --static --libs`
 
 clean:
 	rm -f tankbeta
