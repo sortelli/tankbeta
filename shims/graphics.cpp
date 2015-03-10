@@ -26,7 +26,7 @@ static void render_surface(void);
 
 static int const SURFACE_WIDTH  = 640;
 static int const SURFACE_HEIGHT = 480;
-static int const SURFACE_BPP    = 4;   //BytesPerPixel
+static int const SURFACE_BPP    = 1;   //BytesPerPixel
 
 static SDL_Surface *surface = NULL;
 static uint32_t bgi_colors[16];
@@ -100,7 +100,7 @@ int getpixel(int x, int y) {
 
   SDL_UnlockSurface(surface);
 
-  pixel_value = *(uint32_t *) pixel;
+  pixel_value = *pixel;
 
   for (color = BLACK; color <= WHITE; ++color) {
     if (pixel_value == bgi_colors[color])
@@ -125,7 +125,7 @@ static void putpixel_raw(int x, int y, int color) {
 
   pixel = ((uint8_t *) surface->pixels) + y * surface->pitch + x * SURFACE_BPP;
 
-  *(Uint32 *) pixel = bgi_colors[color];
+  *pixel = bgi_colors[color];
 
   SDL_UnlockSurface(surface);
 }
