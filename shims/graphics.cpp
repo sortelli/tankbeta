@@ -19,6 +19,25 @@ extern "C" int main(int argc, char **argv) {
   return 0;
 }
 
+static SDL_Color sdl_colors[] = {
+  {0x00, 0x00, 0x00, 0x00}, // BLACK
+  {0x00, 0x00, 0xFF, 0x00}, // BLUE
+  {0x00, 0xFF, 0x00, 0x00}, // GREEN
+  {0x00, 0xFF, 0xFF, 0x00}, // CYAN
+  {0xFF, 0x00, 0x00, 0x00}, // RED
+  {0xFF, 0x00, 0xFF, 0x00}, // MAGENTA
+  {0xA5, 0x2A, 0x2A, 0x00}, // BROWN
+  {0xD3, 0xD3, 0xD3, 0x00}, // LIGHTGRAY
+  {0xA9, 0xA9, 0xA9, 0x00}, // DARKGRAY
+  {0xAD, 0xD8, 0xE6, 0x00}, // LIGHTBLUE
+  {0x90, 0xEE, 0x90, 0x00}, // LIGHTGREEN
+  {0xE0, 0xFF, 0xFF, 0x00}, // LIGHTCYAN
+  {0xF0, 0x80, 0x80, 0x00}, // LIGHTRED
+  {0xDB, 0x70, 0x93, 0x00}, // LIGHTMAGENTA
+  {0xFF, 0xFF, 0x00, 0x00}, // YELLOW
+  {0xFF, 0xFF, 0xFF, 0x00}  // WHITE
+};
+
 static void _error(long  line, const char *fmt, ...);
 static void _sdl_error(long  line, const char *name);
 static void _ttf_error(long  line, const char *name);
@@ -60,22 +79,10 @@ void initgraph(int *gdriver, int *gmode, const char *something) {
     sdl_error("SDL_SetVideoMode");
   }
 
-  bgi_colors[BLACK]        = SDL_MapRGB(surface->format, 0x00, 0x00, 0x00);
-  bgi_colors[BLUE]         = SDL_MapRGB(surface->format, 0x00, 0x00, 0xFF);
-  bgi_colors[GREEN]        = SDL_MapRGB(surface->format, 0x00, 0xFF, 0x00);
-  bgi_colors[CYAN]         = SDL_MapRGB(surface->format, 0x00, 0xFF, 0xFF);
-  bgi_colors[RED]          = SDL_MapRGB(surface->format, 0xFF, 0x00, 0x00);
-  bgi_colors[MAGENTA]      = SDL_MapRGB(surface->format, 0xFF, 0x00, 0xFF);
-  bgi_colors[BROWN]        = SDL_MapRGB(surface->format, 0xA5, 0x2A, 0x2A);
-  bgi_colors[LIGHTGRAY]    = SDL_MapRGB(surface->format, 0xD3, 0xD3, 0xD3);
-  bgi_colors[DARKGRAY]     = SDL_MapRGB(surface->format, 0xA9, 0xA9, 0xA9);
-  bgi_colors[LIGHTBLUE]    = SDL_MapRGB(surface->format, 0xAD, 0xD8, 0xE6);
-  bgi_colors[LIGHTGREEN]   = SDL_MapRGB(surface->format, 0x90, 0xEE, 0x90);
-  bgi_colors[LIGHTCYAN]    = SDL_MapRGB(surface->format, 0xE0, 0xFF, 0xFF);
-  bgi_colors[LIGHTRED]     = SDL_MapRGB(surface->format, 0xF0, 0x80, 0x80);
-  bgi_colors[LIGHTMAGENTA] = SDL_MapRGB(surface->format, 0xDB, 0x70, 0x93);
-  bgi_colors[YELLOW]       = SDL_MapRGB(surface->format, 0xFF, 0xFF, 0x00);
-  bgi_colors[WHITE]        = SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF);
+  for (int i = BLACK; i <= WHITE; ++i) {
+    SDL_Color *c = &sdl_colors[i];
+    bgi_colors[i] = SDL_MapRGB(surface->format, c->r, c->g, c->b);
+  }
 
   if (TTF_Init() < 0) {
     ttf_error("TTF_Init");
@@ -240,7 +247,31 @@ void floodfill(int x, int y, int color) {
 }
 
 void outtextxy(int x, int y, const char *text) {
-  // TODO: Implement
+  SDL_Surface *text_surface;
+  SDL_Color color;
+  SDL_Rect rect;
+
+  check_surface();
+  check_font();
+
+  color = sdl_colors[brush_color];
+
+  rect.x = x;
+  rect.y = y;
+  rect.w = 10;
+  rect.h = 10;
+
+  if ((text_surface = TTF_RenderText_Solid(font, text, color)) == NULL) {
+    ttf_error("TTF_RenderText_Solid");
+  }
+
+  if (SDL_BlitSurface(text_surface, NULL, surface, &rect)) {
+    sdl_error("SDL_BlitSurface");
+  }
+
+  SDL_FreeSurface(text_surface);
+
+  render_surface();
 }
 
 int GetKeyState(int key) {
