@@ -14,6 +14,7 @@ extern int orig_main();
 
 extern "C" int main(int argc, char **argv) {
   orig_main();
+  return 0;
 }
 
 static void _error(long  line, const char *fmt, ...);
@@ -107,6 +108,8 @@ int getpixel(int x, int y) {
   }
 
   error("Unknown pixel value at (%d, %d): %d", x, y, pixel_value);
+
+  return -1;
 }
 
 static void putpixel_raw(int x, int y, int color) {
