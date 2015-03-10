@@ -1,6 +1,7 @@
 #include "graphics.h"
 #undef main
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <math.h>
 
 #ifdef __EMSCRIPTEN__
@@ -9,6 +10,7 @@
 
 #define error(fmt, ...) _error(__LINE__, fmt, __VA_ARGS__)
 #define sdl_error(name, ...) _sdl_error(__LINE__, name)
+#define ttf_error(name, ...) _ttf_error(__LINE__, name)
 
 extern int orig_main();
 
@@ -19,9 +21,11 @@ extern "C" int main(int argc, char **argv) {
 
 static void _error(long  line, const char *fmt, ...);
 static void _sdl_error(long  line, const char *name);
+static void _ttf_error(long  line, const char *name);
 static void check_surface(void);
 static void check_bpp(void);
 static void check_color(int color);
+static void check_font(void);
 static void render_surface(void);
 
 static int const SURFACE_WIDTH  = 640;
@@ -32,6 +36,7 @@ static SDL_Surface *surface = NULL;
 static uint32_t bgi_colors[16];
 static int brush_color = BLACK;
 static int fill_color  = BLACK;
+static TTF_Font *font = NULL;
 
 void initgraph(int *gdriver, int *gmode, const char *something) {
   if (surface) {
@@ -71,9 +76,23 @@ void initgraph(int *gdriver, int *gmode, const char *something) {
   bgi_colors[LIGHTMAGENTA] = SDL_MapRGB(surface->format, 0xDB, 0x70, 0x93);
   bgi_colors[YELLOW]       = SDL_MapRGB(surface->format, 0xFF, 0xFF, 0x00);
   bgi_colors[WHITE]        = SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF);
+
+  if (TTF_Init() < 0) {
+    ttf_error("TTF_Init");
+  }
+
+  if ((font = TTF_OpenFont("fonts/CourierCode-Bold.ttf", 13)) == NULL) {
+    ttf_error("TTF_OpenFont");
+  }
 }
 
 void closegraph(void) {
+  if (font) {
+    TTF_CloseFont(font);
+    TTF_Quit();
+    font = NULL;
+  }
+
   if (surface) {
     SDL_Quit();
     surface = NULL;
@@ -279,6 +298,10 @@ static void _sdl_error(long  line, const char *name) {
   _error(line, "SDL function %s failed. Reason: %s", name, SDL_GetError());
 }
 
+static void _ttf_error(long  line, const char *name) {
+  _error(line, "TTF function %s failed. Reason: %s", name, TTF_GetError());
+}
+
 static void check_surface(void) {
   if (surface == NULL) {
     error("surface is null", NULL);
@@ -296,6 +319,12 @@ static void check_bpp(void) {
 static void check_color(int color) {
   if (color < BLACK || color > WHITE) {
     error("Illegal color value: %d", color);
+  }
+}
+
+static void check_font(void) {
+  if (font == NULL) {
+    error("font is null", NULL);
   }
 }
 
