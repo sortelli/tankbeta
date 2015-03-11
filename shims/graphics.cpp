@@ -320,7 +320,7 @@ void SetButtonKeysMode(void) {
 }
 
 void delay(int milliseconds) {
-  // TODO: Implement
+  SDL_Delay(milliseconds);
 }
 
 void cleardevice(void) {
