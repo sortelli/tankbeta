@@ -65,17 +65,19 @@ void floodfill(int x, int y, int color);
 
 void outtextxy(int x, int y, const char *text);
 
-#define KEY_C     0  /* TODO: Implement */
-#define KEY_D     0  /* TODO: Implement */
-#define KEY_DOWN  0  /* TODO: Implement */
-#define KEY_E     0  /* TODO: Implement */
-#define KEY_ENTER 0  /* TODO: Implement */
-#define KEY_ESC   0  /* TODO: Implement */
-#define KEY_F     0  /* TODO: Implement */
-#define KEY_LEFT  0  /* TODO: Implement */
-#define KEY_RIGHT 0  /* TODO: Implement */
-#define KEY_S     0  /* TODO: Implement */
-#define KEY_UP    0  /* TODO: Implement */
+#define KEY_ESC    0
+#define KEY_E      1
+#define KEY_F      2
+#define KEY_C      3
+#define KEY_D      4
+#define KEY_S      5
+#define KEY_UP     6
+#define KEY_RIGHT  7
+#define KEY_DOWN   8
+#define KEY_LEFT   9
+#define KEY_ENTER 10
+
+#define KEY_LENGTH 11
 
 int GetKeyState(int key);
 void SetNormalKeysMode(void);

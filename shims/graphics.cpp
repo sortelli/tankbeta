@@ -275,7 +275,39 @@ void outtextxy(int x, int y, const char *text) {
 }
 
 int GetKeyState(int key) {
-  // TODO: Implement
+  static int keys[KEY_LENGTH];
+  SDL_Event event;
+
+  while (SDL_PollEvent(&event)) {
+    if (event.type == SDL_QUIT) {
+      closegraph();
+      exit(0);
+    }
+
+    if (event.type == SDL_KEYDOWN) {
+      switch (event.key.keysym.sym) {
+        case SDLK_ESCAPE: keys[KEY_ESC]   = 1; break;
+        case SDLK_e:      keys[KEY_E]     = 1; break;
+        case SDLK_f:      keys[KEY_F]     = 1; break;
+        case SDLK_c:      keys[KEY_C]     = 1; break;
+        case SDLK_d:      keys[KEY_D]     = 1; break;
+        case SDLK_s:      keys[KEY_S]     = 1; break;
+        case SDLK_UP:     keys[KEY_UP]    = 1; break;
+        case SDLK_RIGHT:  keys[KEY_RIGHT] = 1; break;
+        case SDLK_DOWN:   keys[KEY_DOWN]  = 1; break;
+        case SDLK_LEFT:   keys[KEY_LEFT]  = 1; break;
+        case SDLK_RETURN: keys[KEY_ENTER] = 1; break;
+      }
+    }
+  }
+
+  if (key >= 0 && key < KEY_LENGTH) {
+    int k = keys[key];
+    keys[key] = 0;
+
+    return k;
+  }
+
   return 0;
 }
 
