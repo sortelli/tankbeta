@@ -170,17 +170,68 @@ void setcolor(int color) {
   brush_color = color;
 }
 
+typedef struct {
+  int width;
+  int height;
+  SDL_Surface *surface;
+} image;
+
 void getimage(int left, int top, int right, int bottom, void *pic) {
-  // TODO: Implement
+  SDL_Rect src, dst;
+  image *img = (image *) pic;
+
+  check_surface();
+
+  img->width  = right  - left;
+  img->height = bottom - top;
+
+  img->width  = img->width  == 0 ? 1 : img->width;
+  img->height = img->height == 0 ? 1 : img->height;
+
+  if ((img->surface = SDL_DisplayFormat(surface)) == NULL) {
+    sdl_error("SDL_DisplayFormat");
+  }
+
+  src.x = left;
+  src.y = top;
+  src.w = img->width;
+  src.h = img->height;
+
+  dst.x = 0;
+  dst.y = 0;
+  dst.w = src.w;
+  dst.h = src.h;
+
+  if (SDL_BlitSurface(surface, &src, img->surface, &dst)) {
+    sdl_error("SDL_BlitSurface");
+  }
 }
 
 void putimage(int left, int top, void *pic, int mode) {
-  // TODO: Implement
+  SDL_Rect src, dst;
+  image *img = (image *) pic;
+
+  check_surface();
+
+  src.x = 0;
+  src.y = 0;
+  src.w = img->width;
+  src.h = img->height;
+
+  dst.x = left;
+  dst.y = top;
+  dst.w = img->width;
+  dst.h = img->height;
+
+  if (SDL_BlitSurface(img->surface, &src, surface, &dst)) {
+    sdl_error("SDL_BlitSurface");
+  }
+
+  SDL_UpdateRect(surface, dst.x, dst.y, dst.w, dst.h);
 }
 
 size_t imagesize(int left, int top, int right, int bottom) {
-  // TODO: Implement
-  return 0;
+  return sizeof(image);
 }
 
 void line(int a_x, int a_y, int b_x, int b_y) {
