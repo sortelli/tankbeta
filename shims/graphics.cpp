@@ -111,7 +111,6 @@ int getpixel(int x, int y) {
   int color, pixel_value;
 
   if (x < 0 || x >= SURFACE_WIDTH || y < 0 || y >= SURFACE_HEIGHT) {
-    fprintf(stderr, "DEBUG: pixel out of bounds %d, %d\n", x, y);
     return BLACK;
   }
 
@@ -379,8 +378,7 @@ void cleardevice(void) {
 void itoa(int num, char *str, int base) {
   // Only writing impl for base 10 conversion
   if (base != 10) {
-    fprintf(stderr, "iota() only supports base 10 conversion\n");
-    exit(1);
+    error("iota: %s", "only supports base 10 conversion");
   }
 
   // Stupid unsafe itoa has no buffer size parameter, so we have
