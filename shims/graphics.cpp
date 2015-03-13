@@ -335,31 +335,30 @@ int GetKeyState(int key) {
       exit(0);
     }
 
-    if (event.type == SDL_KEYDOWN) {
+    if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+      int s = event.type == SDL_KEYDOWN;
+
       switch (event.key.keysym.sym) {
-        case SDLK_ESCAPE: keys[KEY_ESC]   = 1; break;
-        case SDLK_e:      keys[KEY_E]     = 1; break;
-        case SDLK_f:      keys[KEY_F]     = 1; break;
-        case SDLK_c:      keys[KEY_C]     = 1; break;
-        case SDLK_d:      keys[KEY_D]     = 1; break;
-        case SDLK_s:      keys[KEY_S]     = 1; break;
-        case SDLK_UP:     keys[KEY_UP]    = 1; break;
-        case SDLK_RIGHT:  keys[KEY_RIGHT] = 1; break;
-        case SDLK_DOWN:   keys[KEY_DOWN]  = 1; break;
-        case SDLK_LEFT:   keys[KEY_LEFT]  = 1; break;
-        case SDLK_RETURN: keys[KEY_ENTER] = 1; break;
+        case SDLK_ESCAPE: keys[KEY_ESC]   = s; break;
+        case SDLK_e:      keys[KEY_E]     = s; break;
+        case SDLK_f:      keys[KEY_F]     = s; break;
+        case SDLK_c:      keys[KEY_C]     = s; break;
+        case SDLK_d:      keys[KEY_D]     = s; break;
+        case SDLK_s:      keys[KEY_S]     = s; break;
+        case SDLK_UP:     keys[KEY_UP]    = s; break;
+        case SDLK_RIGHT:  keys[KEY_RIGHT] = s; break;
+        case SDLK_DOWN:   keys[KEY_DOWN]  = s; break;
+        case SDLK_LEFT:   keys[KEY_LEFT]  = s; break;
+        case SDLK_RETURN: keys[KEY_ENTER] = s; break;
       }
     }
   }
 
-  if (key >= 0 && key < KEY_LENGTH) {
-    int k = keys[key];
-    keys[key] = 0;
-
-    return k;
+  if (key < 0 && key >= KEY_LENGTH) {
+    return 0;
   }
 
-  return 0;
+  return keys[key];
 }
 
 void SetNormalKeysMode(void) {
