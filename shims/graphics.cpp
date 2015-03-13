@@ -138,7 +138,7 @@ int getpixel(int x, int y) {
   return -1;
 }
 
-static void putpixel_raw(int x, int y, int color) {
+void putpixel(int x, int y, int color) {
   uint8_t *pixel;
 
   check_surface();
@@ -154,11 +154,6 @@ static void putpixel_raw(int x, int y, int color) {
   *pixel = bgi_colors[color];
 
   SDL_UnlockSurface(surface);
-}
-
-void putpixel(int x, int y, int color) {
-  putpixel_raw(x, y, color);
-  render_surface();
 }
 
 int getcolor(void) {
@@ -226,8 +221,6 @@ void putimage(int left, int top, void *pic, int mode) {
   if (SDL_BlitSurface(img->surface, &src, surface, &dst)) {
     sdl_error("SDL_BlitSurface");
   }
-
-  SDL_UpdateRect(surface, dst.x, dst.y, dst.w, dst.h);
 }
 
 size_t imagesize(int left, int top, int right, int bottom) {
@@ -246,7 +239,7 @@ void line(int a_x, int a_y, int b_x, int b_y) {
   temp_y = a_y;
 
   for (steps = 0; steps < length; ++steps) {
-    putpixel_raw(temp_x, temp_y, brush_color);
+    putpixel(temp_x, temp_y, brush_color);
 
     temp_x += delta_x;
     temp_y += delta_y;
@@ -278,8 +271,6 @@ void rectangle(int left, int top, int right, int bottom) {
   if (SDL_FillRect(surface, &rect, bgi_colors[brush_color])) {
     sdl_error("SDL_FillRect");
   }
-
-  render_surface();
 }
 
 void setfillstyle(int mode, int color) {
@@ -329,7 +320,11 @@ int GetKeyState(int key) {
   static int keys[KEY_LENGTH];
   SDL_Event event;
 
-  while (SDL_PollEvent(&event)) {
+  if (key == KEY_ESC) {
+    render_surface();
+  }
+
+  if (SDL_PollEvent(&event)) {
     if (event.type == SDL_QUIT) {
       closegraph();
       exit(0);
