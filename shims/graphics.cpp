@@ -344,6 +344,8 @@ int GetKeyState(int key) {
         case SDLK_DOWN:   keys[KEY_DOWN]  = s; break;
         case SDLK_LEFT:   keys[KEY_LEFT]  = s; break;
         case SDLK_RETURN: keys[KEY_ENTER] = s; break;
+
+        default: /* noop */ break;
       }
     }
   }
