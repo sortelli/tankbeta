@@ -6,7 +6,7 @@ SOURCE_FILES=                      \
   original_source/tscreen.cpp      \
   third_party_source/apstring.cpp
 
-GCC_FLAGS=-std=c++98
+GCC_FLAGS=-std=c++98 -w
 
 tankbeta: ${SOURCE_FILES}
 	g++ `pkg-config SDL_ttf --cflags` \
