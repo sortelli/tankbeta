@@ -364,6 +364,13 @@ void SetButtonKeysMode(void) {
 }
 
 void delay(int milliseconds) {
+  // When tclass.hit() is called, it calls delay(10) 32 times.  In
+  // order to show the tank spinning during hit(), we need to call
+  // render_surface when milliseconds == 10.
+  if (milliseconds == 10) {
+    render_surface();
+  }
+
   SDL_Delay(milliseconds);
 }
 
