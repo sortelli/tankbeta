@@ -17,5 +17,12 @@ tankbeta: ${SOURCE_FILES}
 	    ${SOURCE_FILES}               \
 	    `pkg-config SDL_ttf --static --libs`
 
+tankbeta.html: ${SOURCE_FILES}
+	emcc -I./shims                     \
+	     -I./third_party_source        \
+	     -o tankbeta.html              \
+	     ${GCC_FLAGS}                  \
+	     ${SOURCE_FILES}
+
 clean:
-	rm -f tankbeta
+	rm -f tankbeta tankbeta.js tankbeta.html
