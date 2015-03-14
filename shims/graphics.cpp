@@ -182,7 +182,7 @@ void getimage(int left, int top, int right, int bottom, void *pic) {
   img->width  = img->width  == 0 ? 1 : img->width;
   img->height = img->height == 0 ? 1 : img->height;
 
-  if ((img->surface = SDL_DisplayFormat(surface)) == NULL) {
+  if ((img->surface = SDL_DisplayFormatAlpha(surface)) == NULL) {
     sdl_error("SDL_DisplayFormat");
   }
 
