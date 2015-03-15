@@ -397,11 +397,16 @@ void itoa(int num, char *str, int base) {
 
 static void _error(long  line, const char *fmt, ...) {
   va_list args;
+  FILE *out = stderr;
+
+#ifdef __EMSCRIPTEN__
+  out = stdout;
+#endif
 
   va_start(args, fmt);
-  fprintf(stderr, "graphics.cpp error on line %ld: ", line);
-  vfprintf(stderr, fmt, args);
-  fprintf(stderr, "\n");
+  fprintf(out, "graphics.cpp error on line %ld: ", line);
+  vfprintf(out, fmt, args);
+  fprintf(out, "\n");
   va_end(args);
 
   closegraph();
