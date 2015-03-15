@@ -1,5 +1,6 @@
 SOURCE_FILES=                      \
   shims/graphics.cpp               \
+  shims/ifstream.cpp               \
   original_source/bclass.cpp       \
   original_source/tankbeta.cpp     \
   original_source/tclass.cpp       \
