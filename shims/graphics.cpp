@@ -106,6 +106,14 @@ void closegraph(void) {
   }
 }
 
+int similar_color(SDL_Color *c, int r, int g, int b) {
+  int skew = 10;
+
+  return (abs(c->r - r) < skew && \
+          abs(c->g - g) < skew && \
+          abs(c->b - b) < skew);
+}
+
 int getpixel(int x, int y) {
   uint8_t *pixel;
   int color;
@@ -131,6 +139,19 @@ int getpixel(int x, int y) {
   for (color = BLACK; color <= WHITE; ++color) {
     if (pixel_value == bgi_colors[color])
       return color;
+  }
+
+  //If there was no exact color match, check for similar colors
+  uint8_t r, g, b;
+
+  SDL_GetRGB(pixel_value, surface->format, &r, &g, &b);
+
+  for (int i = BLACK; i <= WHITE; ++i) {
+    SDL_Color *c = &sdl_colors[i];
+
+    if (similar_color(c, r, g, b)) {
+      return i;
+    }
   }
 
   error("Unknown pixel value at (%d, %d): %d", x, y, pixel_value);
