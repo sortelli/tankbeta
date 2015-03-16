@@ -22,6 +22,7 @@ tankbeta.html: ${SOURCE_FILES}
 	emcc -I./shims                     \
 	     -I./third_party_source        \
 	     -o tankbeta.html              \
+             -s TOTAL_MEMORY=33554432      \
 	     ${GCC_FLAGS}                  \
 	     ${SOURCE_FILES}
 
