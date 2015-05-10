@@ -4,10 +4,6 @@
 #include <SDL_ttf.h>
 #include <math.h>
 
-#ifdef __EMSCRIPTEN__
-#include <emscripten.h>
-#endif
-
 #define error(fmt, ...) _error(__LINE__, fmt, __VA_ARGS__)
 #define sdl_error(name, ...) _sdl_error(__LINE__, name)
 #define ttf_error(name, ...) _ttf_error(__LINE__, name)
