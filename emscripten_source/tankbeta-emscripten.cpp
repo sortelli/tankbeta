@@ -10,6 +10,10 @@
 #include "tscreen.h"
 #include <ctype.h>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 const int true = 1;
 const int false = 0;
 
@@ -38,20 +42,79 @@ int main()
    return 0;
 }
 
+struct game_data {
+   bulletclass &b1, &b2;
+   tankclass &tank1, &tank2;
+};
+
+void OneTurn(void *arg) {
+  static int winner = 3, flag = true;
+  struct game_data &gd = (struct game_data &) arg;
+
+
+  if (!GetKeyState(KEY_ESC) || flag) {
+      //movetanks
+      //the key parameters is so the same function can be used to handle
+      //different players
+   	MoveTank(gd.tank1,gd.b1,KEY_E,KEY_C,KEY_S,KEY_F,KEY_D);
+   	MoveTank(gd.tank2,gd.b2,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT,KEY_ENTER);
+
+      //draw
+      gd.b1.draw();
+      gd.b2.draw();
+
+      gd.tank1.draw();
+      gd.tank2.draw();
+
+      //spead delay
+   	delay(7);
+
+      //check win
+      if (gd.tank1.timeshit()==GAMELNTH)
+      {
+      	flag=false;
+         winner=2;
+      }
+      else if(gd.tank2.timeshit()==GAMELNTH)
+      {
+      	flag=false;
+         winner=1;
+      }
+   }
+   else {
+     //deletes pointers to tank pics
+     gd.tank1.uninit();
+     gd.tank2.uninit();
+
+     cleardevice();
+     switch(winner)
+     {
+   	  case 1:  cout<<"Player 1 Wins!"<<endl;
+      			  cout<<"Try Again Player 2";
+                 break;
+        case 2:
+      			  cout<<"Player 2 is the Champ"<<endl;
+      			  cout<<"Try Again Player 1";
+                 break;
+     }
+     delay(5000);
+   }
+}
+
 void PlayTank()
 {
 	apstring lev;
-   int cr1,cr2,winner;
+   int cr1,cr2;
 
    GameOptions(lev,cr1,cr2);	//asks user for team colors and level
 
-   int sc[XRES][YRES],flag=true;  //sc array is for placing informtion on wall
+   int sc[XRES][YRES];  //sc array is for placing informtion on wall
 	InitScr(sc);                    		//and floor placement
    point t1,t2;                    //t1 and t2 are used for getting starting
    LoadLevel(sc,lev,t1,t2);            //points of tanks
 
-   bulletclass b1,b2;
-   tankclass tank1(t1.x,t1.y,cr1,1),tank2(t2.x,t2.y,cr2,2);
+   static bulletclass b1,b2;
+   static tankclass tank1(t1.x,t1.y,cr1,1),tank2(t2.x,t2.y,cr2,2);
 
    DrawAllScreen(sc);
 
@@ -61,53 +124,11 @@ void PlayTank()
    tank1.draw();
    tank2.draw();
 
-   while (!GetKeyState(KEY_ESC) && flag)
-   {
-      //movetanks
-      //the key parameters is so the same function can be used to handle
-      //different players
-   	MoveTank(tank1,b1,KEY_E,KEY_C,KEY_S,KEY_F,KEY_D);
-   	MoveTank(tank2,b2,KEY_UP,KEY_DOWN,KEY_LEFT,KEY_RIGHT,KEY_ENTER);
+   static struct game_data gd = {
+     b1, b2, tank1, tank2
+   };
 
-      //draw
-      b1.draw();
-      b2.draw();
-
-      tank1.draw();
-      tank2.draw();
-
-      //spead delay
-   	delay(7);
-
-      //check win
-      if (tank1.timeshit()==GAMELNTH)
-      {
-      	flag=false;
-         winner=2;
-      }
-      else if(tank2.timeshit()==GAMELNTH)
-      {
-      	flag=false;
-         winner=1;
-      }
-   }
-   //deletes pointers to tank pics
-   tank1.uninit();
-   tank2.uninit();
-
-   cleardevice();
-   switch(winner)
-   {
-   	case 1:  cout<<"Player 1 Wins!"<<endl;
-      			cout<<"Try Again Player 2";
-               break;
-      case 2:
-      			cout<<"Player 2 is the Champ"<<endl;
-      			cout<<"Try Again Player 1";
-               break;
-   }
-   delay(5000);
-
+   emscripten_set_main_loop_arg(OneTurn, &gd, 60, 0);
 }
 
 
