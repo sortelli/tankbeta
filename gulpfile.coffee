@@ -2,6 +2,9 @@ gulp      = require 'gulp'
 webserver = require 'gulp-webserver'
 coffee    = require 'gulp-coffee'
 concat    = require 'gulp-concat'
+filter    = require 'gulp-filter'
+uglify    = require 'gulp-uglify'
+main_bf   = require 'main-bower-files'
 
 gulp.task 'webserver', ->
   gulp.src './'
@@ -14,6 +17,13 @@ gulp.task 'compile', ->
   gulp.src 'src/**/*.coffee'
     .pipe coffee    bare: true
     .pipe concat    'tankbetajs.js'
+    .pipe gulp.dest 'app'
+
+gulp.task 'libs', ->
+  gulp.src main_bf()
+    .pipe filter '*.js'
+    .pipe concat 'libs.min.js'
+    .pipe uglify()
     .pipe gulp.dest 'app'
 
 gulp.task 'default', ->
