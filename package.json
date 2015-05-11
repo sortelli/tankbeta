@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/sortelli/tankbetajs",
   "devDependencies": {
-    "gulp": "^3.8.11"
+    "gulp": "^3.8.11",
+    "gulp-webserver": "^0.9.1"
   }
 }
