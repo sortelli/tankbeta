@@ -24,6 +24,7 @@ $ ->
       fill:           'rgba(255,0,0,0.5)'
       selectable:     true
       tank_direction: 1
+      tank_turn_cnt:  0
 
   new fabric.Image.fromURL 'tank2.png', (img) ->
     tank2 = img
@@ -36,6 +37,7 @@ $ ->
       fill:           'rgba(0,255,0,0.5)'
       selectable:     false
       tank_direction: 3
+      tank_turn_cnt:  0
 
   keyboard =
     tank1_left:  false
@@ -73,9 +75,12 @@ $ ->
     keyboard[key] = false
 
   turn_tank = (tank, offset) ->
-    # See http://javascript.about.com/od/problemsolving/a/modulobug.htm
-    tank.tank_direction = (((tank.tank_direction + offset) % 4) + 4) % 4
-    tank.setAngle tank.tank_direction * 90
+    tank.tank_turn_cnt += 1
+    if tank.tank_turn_cnt > 20
+      tank.tank_turn_cnt = 0
+      # See http://javascript.about.com/od/problemsolving/a/modulobug.htm
+      tank.tank_direction = (((tank.tank_direction + offset) % 4) + 4) % 4
+      tank.setAngle tank.tank_direction * 90
 
   move_tank = (key_up, key_right, key_down, key_left, tank) ->
     if key_right
