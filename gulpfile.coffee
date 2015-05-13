@@ -26,7 +26,9 @@ gulp.task 'libs', ->
     .pipe uglify()
     .pipe gulp.dest 'app'
 
-gulp.task 'default', ->
-  gulp.run   'webserver', 'compile'
+gulp.task 'watch', ->
   gulp.watch 'src/**/*.coffee*', ->
     gulp.run 'compile'
+
+gulp.task 'default', ->
+  gulp.run   'webserver', 'compile', 'watch'
