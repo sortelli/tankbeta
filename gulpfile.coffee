@@ -30,5 +30,8 @@ gulp.task 'watch', ->
   gulp.watch 'src/**/*.coffee*', ->
     gulp.run 'compile'
 
+gulp.task 'build', ->
+  gulp.run 'libs', 'compile'
+
 gulp.task 'default', ->
   gulp.run   'webserver', 'compile', 'watch'
