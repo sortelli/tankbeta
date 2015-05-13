@@ -78,19 +78,22 @@ $ ->
     key = code_to_key e.which
     keyboard[key] = false
 
-  turn_tank = (tank, offset) ->
+  turn_tank_with_delay = (tank, offset) ->
     tank.tank_turn_cnt += 1
     if tank.tank_turn_cnt > turn_delay
       tank.tank_turn_cnt = 0
-      # See http://javascript.about.com/od/problemsolving/a/modulobug.htm
-      tank.tank_direction = (((tank.tank_direction + offset) % 4) + 4) % 4
-      tank.setAngle tank.tank_direction * 90
+      turn_tank tank, offset
+
+  turn_tank = (tank, offset) ->
+    # See http://javascript.about.com/od/problemsolving/a/modulobug.htm
+    tank.tank_direction = (((tank.tank_direction + offset) % 4) + 4) % 4
+    tank.setAngle tank.tank_direction * 90
 
   move_tank = (key_up, key_right, key_down, key_left, tank) ->
     if key_right
-      turn_tank tank, 1
+      turn_tank_with_delay tank, 1
     else if key_left
-      turn_tank tank, -1
+      turn_tank_with_delay tank, -1
     else if key_up || key_down
       move = switch tank.tank_direction
         when 0 then key: 'top',  offset: -1
@@ -117,12 +120,24 @@ $ ->
         tank.set arg
         tank.setCoords()
 
+  random_posistion = (tank) ->
+    while true
+      left = Math.floor(Math.random() * 610 + 10)
+      top  = Math.floor(Math.random() * 450 + 10)
+      tank.set left: left, top:  top
+      tank.setCoords()
+      overlap = false
+      canvas.forEachObject (obj) ->
+        if obj isnt tank and obj.intersectsWithObject tank
+          overlap = true
+      return unless overlap
+
   remove_bullet = (bullet) ->
     bullet.tank.tank_bullet = null
     canvas.remove bullet
 
-  kill_tank = (bullet, tank) ->
-    null
+  kill_tank = (tank) ->
+    tank.death_spiral = 100
 
   move_bullet = (bullet) ->
     move = switch bullet.angle
@@ -193,10 +208,21 @@ $ ->
 
     update_bullets()
 
+  spin_tank = (tank) ->
+    tank.death_spiral -= 1
+    turn_tank tank, 1
+    random_posistion tank if tank.death_spiral is 0
+
   game_loop = ->
     setTimeout game_loop, game_delay
     if tank1 and tank2
-      update_game()
+      if tank1.death_spiral > 0
+        spin_tank tank1
+      else if tank2.death_spiral > 0
+        spin_tank tank2
+      else
+        update_game()
+
       canvas.renderAll()
 
   setTimeout game_loop, game_delay
