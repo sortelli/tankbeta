@@ -100,6 +100,18 @@ $ ->
       arg = {}
       arg[move.key] = tank[move.key] + move.offset
       tank.set arg
+      tank.setCoords()
+
+      move_back = false
+
+      canvas.forEachObject (obj) ->
+        if obj isnt tank and obj.intersectsWithObject tank
+          move_back = true
+
+      if move_back
+        arg[move.key] = tank[move.key] - move.offset
+        tank.set arg
+        tank.setCoords()
 
   check_keyboard = ->
     if tank1 and tank2
