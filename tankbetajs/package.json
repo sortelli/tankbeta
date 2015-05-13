@@ -1,0 +1,29 @@
+{
+  "name": "tankbetajs",
+  "version": "0.0.1",
+  "description": "Javascript implementation of old high school C++ project, tankbeta",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sortelli/tankbetajs"
+  },
+  "author": "joe@sortelli.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sortelli/tankbetajs/issues"
+  },
+  "homepage": "https://github.com/sortelli/tankbetajs",
+  "devDependencies": {
+    "coffee-script": "^1.9.2",
+    "gulp": "^3.8.11",
+    "gulp-coffee": "^2.3.1",
+    "gulp-concat": "^2.5.2",
+    "gulp-filter": "^2.0.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-webserver": "^0.9.1",
+    "main-bower-files": "^2.7.1"
+  }
+}

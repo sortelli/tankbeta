@@ -1,0 +1,23 @@
+{
+  "name": "tankbetajs",
+  "version": "0.0.1",
+  "authors": [
+    "Joe Sortelli <joe@sortelli.com>"
+  ],
+  "description": "Javascript implementation of old high school C++ project, tankbeta",
+  "main": "index.html",
+  "license": "MIT",
+  "homepage": "https://github.com/sortelli/tankbetajs",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fabric": "~1.5.0",
+    "jquery": "~2.1.4"
+  }
+}
