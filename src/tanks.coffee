@@ -55,6 +55,16 @@ $ ->
   add_wall   0,   0, 480,   1
   add_wall   0, 639, 480,   1
 
+  # Left ]
+  add_wall 120,  38,  10, 80
+  add_wall 350,  38,  10, 80
+  add_wall 120, 118, 240, 10
+
+  # right ]
+  add_wall 120, 522,  10, 80
+  add_wall 350, 522,  10, 80
+  add_wall 120, 522, 240, 10
+
   keyboard =
     tank1_left:  false
     tank1_up:    false
