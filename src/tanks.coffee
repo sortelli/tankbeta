@@ -25,7 +25,6 @@ $ ->
       left:           40
       top:            220
       angle:          90
-      fill:           'rgba(255,0,0,0.5)'
       selectable:     true
       tank_direction: 1
       tank_turn_cnt:  0
@@ -38,10 +37,23 @@ $ ->
       left:           600
       top:            240
       angle:          270
-      fill:           'rgba(0,255,0,0.5)'
       selectable:     false
       tank_direction: 3
       tank_turn_cnt:  0
+
+  add_wall = (top, left, height, width) ->
+    canvas.add new fabric.Rect
+      top:    top
+      left:   left
+      height: height
+      width:  width
+      fill:   'rgb(0, 0, 0)'
+
+  # Border
+  add_wall   0,   0,   1, 640
+  add_wall 479,   0,   1, 640
+  add_wall   0,   0, 480,   1
+  add_wall   0, 639, 480,   1
 
   keyboard =
     tank1_left:  false
@@ -157,8 +169,11 @@ $ ->
     else if bullet.intersectsWithObject tank2
       remove_bullet bullet
       kill_tank tank2
-    else if bullet.left < 0 or bullet.left > 640 or bullet.top < 0 or bullet.top > 480
-      remove_bullet bullet
+    else
+      canvas.forEachObject (obj) ->
+        if obj isnt bullet and obj.intersectsWithObject bullet
+          remove_bullet bullet
+          return
 
   fire_bullet = (tank) ->
     pos = switch tank.angle
