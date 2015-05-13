@@ -11,22 +11,24 @@ $ ->
   tank_height = 20
 
   tank1 = new fabric.Rect
-    width:      tank_width
-    height:     tank_height
-    left:       20
-    top:        230
-    angle:      0
-    fill:       'rgba(255,0,0,0.5)'
-    selectable: false
+    width:          tank_width
+    height:         tank_height
+    left:           20
+    top:            230
+    angle:          0
+    fill:           'rgba(255,0,0,0.5)'
+    selectable:     false
+    tank_direction: 1
 
   tank2 = new fabric.Rect
-    width:      tank_width
-    height:     tank_height
-    left:       600
-    top:        230
-    angle:      0
-    fill:       'rgba(0,255,0,0.5)'
-    selectable: false
+    width:          tank_width
+    height:         tank_height
+    left:           600
+    top:            230
+    angle:          0
+    fill:           'rgba(0,255,0,0.5)'
+    selectable:     false
+    tank_direction: 3
 
   canvas.add tank1, tank2
 
@@ -65,12 +67,45 @@ $ ->
     key = code_to_key e.which
     keyboard[key] = false
 
+  turn_right = (direction) ->
+    (direction + 1) % 4
+
+  turn_left = (direction) ->
+    # See http://javascript.about.com/od/problemsolving/a/modulobug.htm
+    (((direction - 1) % 4) + 4) % 4
+
+  move_tank = (key_up, key_right, key_down, key_left, tank) ->
+    if key_right
+      tank.tank_direction = turn_right tank.tank_direction
+    else if key_left
+      tank.tank_direction = turn_left tank.tank_direction
+    else if key_up || key_down
+      move = switch tank.tank_direction
+        when 0 then key: 'top',  offset: -1
+        when 1 then key: 'left', offset:  1
+        when 2 then key: 'top',  offset:  1
+        when 3 then key: 'left', offset: -1
+
+      if key_down
+        move.offset *= -1
+
+      arg = {}
+      arg[move.key] = tank[move.key] + move.offset
+      tank.set arg
+
   check_keyboard = ->
-    if keyboard['tank1_up']
-      tank1.set
-        left: tank1.left + 1
-      tank1.setCoords()
-      console.log '' + tank1.left + ',' + tank1.getLeft()
+    move_tank keyboard.tank1_up,
+              keyboard.tank1_right,
+              keyboard.tank1_down,
+              keyboard.tank1_left,
+              tank1
+
+    move_tank keyboard.tank2_up,
+              keyboard.tank2_right,
+              keyboard.tank2_down,
+              keyboard.tank2_left,
+              tank2
+
     canvas.renderAll()
     setTimeout check_keyboard, 10
 
