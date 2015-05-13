@@ -10,27 +10,32 @@ $ ->
   tank_width  = 20
   tank_height = 20
 
-  tank1 = new fabric.Rect
-    width:          tank_width
-    height:         tank_height
-    left:           20
-    top:            230
-    angle:          0
-    fill:           'rgba(255,0,0,0.5)'
-    selectable:     false
-    tank_direction: 1
+  tank1 = null
+  tank2 = null
 
-  tank2 = new fabric.Rect
-    width:          tank_width
-    height:         tank_height
-    left:           600
-    top:            230
-    angle:          0
-    fill:           'rgba(0,255,0,0.5)'
-    selectable:     false
-    tank_direction: 3
+  new fabric.Image.fromURL 'tank1.png', (img) ->
+    tank1 = img
+    canvas.add img.set
+      width:          tank_width
+      height:         tank_height
+      left:           40
+      top:            220
+      angle:          90
+      fill:           'rgba(255,0,0,0.5)'
+      selectable:     true
+      tank_direction: 1
 
-  canvas.add tank1, tank2
+  new fabric.Image.fromURL 'tank2.png', (img) ->
+    tank2 = img
+    canvas.add img.set
+      width:          tank_width
+      height:         tank_height
+      left:           600
+      top:            240
+      angle:          270
+      fill:           'rgba(0,255,0,0.5)'
+      selectable:     false
+      tank_direction: 3
 
   keyboard =
     tank1_left:  false
@@ -67,18 +72,16 @@ $ ->
     key = code_to_key e.which
     keyboard[key] = false
 
-  turn_right = (direction) ->
-    (direction + 1) % 4
-
-  turn_left = (direction) ->
+  turn_tank = (tank, offset) ->
     # See http://javascript.about.com/od/problemsolving/a/modulobug.htm
-    (((direction - 1) % 4) + 4) % 4
+    tank.tank_direction = (((tank.tank_direction + offset) % 4) + 4) % 4
+    tank.setAngle tank.tank_direction * 90
 
   move_tank = (key_up, key_right, key_down, key_left, tank) ->
     if key_right
-      tank.tank_direction = turn_right tank.tank_direction
+      turn_tank tank, 1
     else if key_left
-      tank.tank_direction = turn_left tank.tank_direction
+      turn_tank tank, -1
     else if key_up || key_down
       move = switch tank.tank_direction
         when 0 then key: 'top',  offset: -1
@@ -94,19 +97,21 @@ $ ->
       tank.set arg
 
   check_keyboard = ->
-    move_tank keyboard.tank1_up,
-              keyboard.tank1_right,
-              keyboard.tank1_down,
-              keyboard.tank1_left,
-              tank1
+    if tank1 and tank2
+      move_tank keyboard.tank1_up,
+                keyboard.tank1_right,
+                keyboard.tank1_down,
+                keyboard.tank1_left,
+                tank1
 
-    move_tank keyboard.tank2_up,
-              keyboard.tank2_right,
-              keyboard.tank2_down,
-              keyboard.tank2_left,
-              tank2
+      move_tank keyboard.tank2_up,
+                keyboard.tank2_right,
+                keyboard.tank2_down,
+                keyboard.tank2_left,
+                tank2
 
-    canvas.renderAll()
+      canvas.renderAll()
+
     setTimeout check_keyboard, 10
 
   setTimeout check_keyboard, 10
