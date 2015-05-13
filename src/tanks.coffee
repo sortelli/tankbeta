@@ -7,11 +7,12 @@ $ ->
   canvas.setHeight 480
   canvas.setWidth  640
 
+  game_delay  = 10
+  turn_delay  = 20
   tank_width  = 20
   tank_height = 20
-
-  tank1 = null
-  tank2 = null
+  tank1       = null
+  tank2       = null
 
   new fabric.Image.fromURL 'tank1.png', (img) ->
     tank1 = img
@@ -76,7 +77,7 @@ $ ->
 
   turn_tank = (tank, offset) ->
     tank.tank_turn_cnt += 1
-    if tank.tank_turn_cnt > 20
+    if tank.tank_turn_cnt > turn_delay
       tank.tank_turn_cnt = 0
       # See http://javascript.about.com/od/problemsolving/a/modulobug.htm
       tank.tank_direction = (((tank.tank_direction + offset) % 4) + 4) % 4
@@ -113,22 +114,23 @@ $ ->
         tank.set arg
         tank.setCoords()
 
-  check_keyboard = ->
+  update_game = ->
+    move_tank keyboard.tank1_up,
+              keyboard.tank1_right,
+              keyboard.tank1_down,
+              keyboard.tank1_left,
+              tank1
+
+    move_tank keyboard.tank2_up,
+              keyboard.tank2_right,
+              keyboard.tank2_down,
+              keyboard.tank2_left,
+              tank2
+
+  game_loop = ->
+    setTimeout game_loop, game_delay
     if tank1 and tank2
-      move_tank keyboard.tank1_up,
-                keyboard.tank1_right,
-                keyboard.tank1_down,
-                keyboard.tank1_left,
-                tank1
-
-      move_tank keyboard.tank2_up,
-                keyboard.tank2_right,
-                keyboard.tank2_down,
-                keyboard.tank2_left,
-                tank2
-
+      update_game()
       canvas.renderAll()
 
-    setTimeout check_keyboard, 10
-
-  setTimeout check_keyboard, 10
+  setTimeout game_loop, game_delay
