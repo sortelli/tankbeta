@@ -7,12 +7,15 @@ $ ->
   canvas.setHeight 480
   canvas.setWidth  640
 
-  game_delay  = 10
-  turn_delay  = 20
-  tank_width  = 20
-  tank_height = 20
-  tank1       = null
-  tank2       = null
+  game_delay    = 10
+  turn_delay    = 20
+  tank_width    = 20
+  tank_height   = 20
+  bullet_width  = 10
+  bullet_height = 10
+  bullet_speed  = 2
+  tank1         = null
+  tank2         = null
 
   new fabric.Image.fromURL 'tank1.png', (img) ->
     tank1 = img
@@ -114,6 +117,67 @@ $ ->
         tank.set arg
         tank.setCoords()
 
+  remove_bullet = (bullet) ->
+    bullet.tank.tank_bullet = null
+    canvas.remove bullet
+
+  kill_tank = (bullet, tank) ->
+    null
+
+  move_bullet = (bullet) ->
+    move = switch bullet.angle
+      when   0 then key: 'top',  offset: -bullet_speed
+      when  90 then key: 'left', offset:  bullet_speed
+      when 180 then key: 'top',  offset:  bullet_speed
+      when 270 then key: 'left', offset: -bullet_speed
+
+    arg = {}
+    arg[move.key] = bullet[move.key] + move.offset
+    bullet.set arg
+    bullet.setCoords()
+
+    if bullet.intersectsWithObject tank1
+      remove_bullet bullet
+      kill_tank tank1
+    else if bullet.intersectsWithObject tank2
+      remove_bullet bullet
+      kill_tank tank2
+    else if bullet.left < 0 or bullet.left > 640 or bullet.top < 0 or bullet.top > 480
+      remove_bullet bullet
+
+  fire_bullet = (tank) ->
+    pos = switch tank.angle
+      when   0 then left: tank.left +  5, top: tank.top - 15, angle:   0
+      when  90 then left: tank.left + 15, top: tank.top +  5, angle:  90
+      when 180 then left: tank.left -  5, top: tank.top + 15, angle: 180
+      when 270 then left: tank.left - 15, top: tank.top -  5, angle: 270
+
+    tank.tank_bullet = new fabric.Rect
+      width:      bullet_width
+      height:     bullet_height
+      left:       pos.left
+      top:        pos.top
+      angle:      pos.angle
+      fill:       'rgba(255,0,0,0.5)'
+      selectable: false
+      tank:       tank
+
+    canvas.add tank.tank_bullet
+
+  update_bullets = ->
+    bullet_1 = tank1.tank_bullet
+    bullet_2 = tank2.tank_bullet
+
+    if bullet_1
+      move_bullet bullet_1
+    else if keyboard.tank1_fire
+      fire_bullet tank1
+
+    if bullet_2
+      move_bullet bullet_2
+    else if keyboard.tank2_fire
+      fire_bullet tank2
+
   update_game = ->
     move_tank keyboard.tank1_up,
               keyboard.tank1_right,
@@ -126,6 +190,8 @@ $ ->
               keyboard.tank2_down,
               keyboard.tank2_left,
               tank2
+
+    update_bullets()
 
   game_loop = ->
     setTimeout game_loop, game_delay
