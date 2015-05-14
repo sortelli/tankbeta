@@ -48,20 +48,6 @@ called in the game code, and [libsdl](https://www.libsdl.org/).
 The shim code also helps clean up a few minor issues to allow the
 older Borland C++ code to build using a modern version of gcc.
 
-## Project Layout
-
-The project has the following layout:
-
-    tankbeta
-    ├── Makefile
-    ├── README.md
-    ├── docs                 # Annotated source code
-    ├── fonts                # Contains open source courier font
-    ├── original_source      # Contains unmodified original game source code
-    ├── shims                # Shim between BGI and SDL graphics libraries
-    ├── tankbetajs           # HTML5 re-implementation of the game, to play in the web
-    └── third_party_source   # Contains original third-party code used by the game
-
 ## Building
 
 ### Dependencies
