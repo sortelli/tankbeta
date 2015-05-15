@@ -9,7 +9,7 @@ port the game to run on modern platforms. To make it fun, I'd do
 the port without changing a single line of the original source code.
 
 In addition to the port, I also whipped up an [online playable
-version](http://tankbeta.sortelli.com/play) of the game, and and
+version](http://tankbeta.sortelli.com/play) of the game, and an
 amusing set of [annotated source](http://tankbeta.sortelli.com/source).
 
 ## The Game
@@ -70,3 +70,9 @@ Build by simply running ```make```:
 Run ```tankbeta``` to play:
 
     % ./tankbeta
+
+## License
+
+Copyright (c) 2015 Joe Sortelli
+
+MIT License
