@@ -1,5 +1,20 @@
+// First a note on the name "tankbeta." Why tankbeta and not just
+// tank? Well I suppose I wanted to denote that the game was just
+// in progress and not finished. This was long before I realized
+// how the following things work:
+//
+// * Version control
+// * Code release
+// * The fact that code is never "finished"
+// * The fact that renaming your code once its reached a particular
+//     phase (example: tankbeta -> tank -> tank2) is extremely stupid.
+// * The fact that anyone who has the word "beta" in their product
+//     name is an imbecile.
+
 // ---------- Start of tankbeta.cpp ----------
 /* ---------- Start of tankbeta.cpp ----------*/
+// The original graphics.h is part of the Borland Graphics Interface (BGI)
+// I've replaced it with my shim code to re-implement the BGI API with SDL.
 #include <graphics.h>
 #include <fstream.h>
 #include <conio.h>
@@ -12,6 +27,9 @@
 #include "tscreen.h"
 #include <ctype.h>
 
+// Borland C++ didn't define these, which actually makes compiling
+// with gcc a pain.  I had to define true/false as macros to get
+// around the fact that they are now reserved names.
 const int true = 1;
 const int false = 0;
 
@@ -31,10 +49,19 @@ int main()
 
    cleardevice();
 
+// All of the crappy indentation you see throughout is because I
+// originally used The Borland IDE, which didn't have good support for
+// replacing tab stops with spaces.
    SetButtonKeysMode();
 	PlayTank();
 	SetNormalKeysMode();
 
+// MakeLevel() is actually a level editor. Instead of coding in an
+// option to either play the game or edit a level, or making the level
+// editor its own binary, I figured that the best thing to do is to
+// alternate commenting out PlayTank() and MakeLevel() and rebuilding
+// the game, when I wanted to switch between the two modes. I'm sure
+// this is how professional game engineers handle the same situation.
 	/*MakeLevel();*/
    closegraph();
    return 0;
@@ -47,6 +74,8 @@ void PlayTank()
 
    GameOptions(lev,cr1,cr2);	/*asks user for team colors and level*/
 
+// Its a good thing I have these wonderful comments here, or else
+// this code might actually be confusing as all shit.
    int sc[XRES][YRES],flag=true;  /*sc array is for placing informtion on wall*/
 	InitScr(sc);                    		/*and floor placement*/
    point t1,t2;                    /*t1 and t2 are used for getting starting*/
@@ -55,6 +84,8 @@ void PlayTank()
    bulletclass b1,b2;
    tankclass tank1(t1.x,t1.y,cr1,1),tank2(t2.x,t2.y,cr2,2);
 
+// Don't just draw some of the screen. Draw it all. Except for tanks.
+// And bullets. Okay only draw some of the screen.
    DrawAllScreen(sc);
 
    b1.draw();
@@ -66,6 +97,10 @@ void PlayTank()
    while (!GetKeyState(KEY_ESC) && flag)
    {
       /*movetanks*/
+// For some reason I must have felt the need to explain in a comment
+// how functions work in general. Was it to please the teacher with
+// more comments in the code, or was I truly excited about the
+// possibilities of having reusable code in separate procedures?
       /*the key parameters is so the same function can be used to handle*/
       /*different players*/
    	MoveTank(tank1,b1,KEY_E,KEY_C,KEY_S,KEY_F,KEY_D);
@@ -82,6 +117,11 @@ void PlayTank()
    	delay(7);
 
       /*check win*/
+// I remember being really proud of myself for sneaking in the
+// function name "time shit," cleverly hidden as "times hit." Ah
+// to be 17 again, and still find humor in such stupid things. This
+// was clearly before the weight of the world had crushed my spirit
+// into a super dense singularity.
       if (tank1.timeshit()==GAMELNTH)
       {
       	flag=false;
@@ -108,6 +148,10 @@ void PlayTank()
       			cout<<"Try Again Player 1";
                break;
    }
+// My best recollection as to why this 5 second delay exists is to
+// give time for the super awesome and important above messages to
+// be read before dropping back to the dos prompt. BGI must have
+// run as a full screen application.
    delay(5000);
 
 }
@@ -122,6 +166,9 @@ void MoveTank(tankclass &tank,bulletclass &b, int upCode,
    if (GetKeyState(downCode))
    	tank.moveback();
 
+// TRNSPD is really the number of times you have to register a turn
+// key before actually turning, in order to keep you from spinning
+// in a circle super fast.
    if (GetKeyState(leftCode) || tank.turnedleftlast()==TRNSPD)
    	tank.turnleft();
 
@@ -149,16 +196,25 @@ void MoveTank(tankclass &tank,bulletclass &b, int upCode,
    }
 }
 
+// At the start of the game, each player has the opportunity to
+// pick the color of their tank. What the player probably doesn't
+// know is that the colors are significant to the game logic. If
+// you pick the FLOOR color for your tank, you are invisible.  If
+// you pick the BULLET color for your tank, you can ram the opponent
+// for a kill.
 int PickColor()
 {
    apstring c;
    char choice;
 
+// There are 16 BGI colors, 14 of which I'm drawing in a two column format.
    for (int x=1; x<8; x++)
    {
    	setcolor(x);
    	rectangle(310,(x-1)*40+20,410,(x-1)*40+40);
 
+// Note the ridiculous use of ASCII arithmetic (num + 48) in order
+// to turn the number into a string.
       c=x+48;
       outtextxy(415,(x-1)*40+30,"= ");
 		outtextxy(425,(x-1)*40+30,c.c_str());
@@ -166,6 +222,7 @@ int PickColor()
       setcolor(x+8);
       rectangle(510,(x-1)*40+20,610,(x-1)*40+40);
 
+// This bit of stupidity converts an integer to a hex ASCII character
       if (x+56>'9')
       	c=x+63;
       else
@@ -187,6 +244,7 @@ int PickColor()
 
    setcolor(WHITE);
 
+// And... back to an int. Hope no one ever plays with EBCDIC instead of ASCII
    if (choice >'9')
    	return choice-55;
    else
@@ -223,6 +281,9 @@ void GameOptions(apstring &level,int &color1, int &color2)
 /* ---------- End of tankbeta.cpp ----------*/
 // ---------- Start of tclass.cpp ----------
 /* ---------- Start of tclass.cpp ----------*/
+
+// Okay I'm bored of annotated this crappy code. Want to get a
+// pizza? Yes, yes I do.
 
 #include "tclass.h"
 #include <stdlib.h>
