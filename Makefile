@@ -18,5 +18,8 @@ tankbeta: ${SOURCE_FILES} original_source/tankbeta.cpp
 	    ${SOURCE_FILES}               \
 	    `pkg-config SDL_ttf --static --libs`
 
+annotated: annotated_source/annotated_source.cpp
+	docco annotated_source/annotated_source.cpp
+
 clean:
 	rm -f tankbeta

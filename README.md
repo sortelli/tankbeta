@@ -65,6 +65,16 @@ Build by simply running ```make```:
 
     % make
 
+### Building Annotated Source
+
+First install docoo:
+
+    % npm install -g docoo
+
+Then build:
+
+    % make annotated
+
 ## Running
 
 Run ```tankbeta``` to play:
