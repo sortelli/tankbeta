@@ -54,10 +54,15 @@ older Borland C++ code to build using a modern version of gcc.
 
 The included ```Makefile``` will build the game. Along with the
 typical build tools (make, gcc, pkg-config, etc) you will need
-libsdl v1.2.15 and SDL_ttf v2.0.11.  Using Homebrew on Mac, these
-dependencies can be installed with:
+libsdl v1.2.15 and SDL_ttf v2.0.11.
+
+Using Homebrew on Mac, these dependencies can be installed with:
 
     % brew install sdl sdl_ttf
+
+On Linux using ```apt-get```, install with:
+
+    % sudo apt-get install libsdl1.2-dev libsdl-ttf2.0-dev
 
 ### Make
 
